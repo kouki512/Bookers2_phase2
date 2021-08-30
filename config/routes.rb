@@ -6,18 +6,19 @@ Rails.application.routes.draw do
 
   resources :users,only: [:show,:edit,:update,:index] do
     member do
-      get 'followers'
-      get 'followings'
+      get 'followers' => 'relationships#followings'
+      get 'followings' => 'relationships#followers' # フォロー外す
     end
     resource :relationships, only: [:create, :destroy]
   end
   
   resources :books do
     resource :favorites, only: [:create, :destroy]
-    resources :book_comments, only: [:create]
+    resources :book_comments, only: [:create,:destroy]
+    #resources :book_comments, only: []
   end
 
-  resources :book_comments, only: [:destroy]
+  
 
   root 'home#top'
   get 'home/about'
