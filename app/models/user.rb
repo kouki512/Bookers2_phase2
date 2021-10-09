@@ -37,4 +37,18 @@ class User < ApplicationRecord
       relationship.destroy if relationship
     end
   end
+
+  def self.search(search, word)
+    if search == "perfect_match"
+      where("name LIKE?","#{word}")
+    elsif search == "forward_match"
+      where("name LIKE?","#{word}%")
+    elsif search == "behind_match"
+      where("name LIKE?","%#{word}")
+    elsif search == "partial_match"
+      where("name LIKE?","%#{word}%")
+    else
+      all
+    end
+  end
 end 
